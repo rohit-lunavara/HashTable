@@ -1,4 +1,4 @@
-#include "ht_direct_addressing.h"
+#include "ht.h"
 #include <string>
 #include <iostream>
 #include <iomanip>
