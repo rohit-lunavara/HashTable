@@ -13,7 +13,7 @@ int main () {
     // assert(ht_int_str.srch(-5) == "Hello") ;
     ht_int_str.del(2) ;
     ht_int_str.del(-10) ;
-    assert(ht_int_str.srch(-10) == "Hello") ;
+    // assert(ht_int_str.srch(-10) == "Hello") ;
 
     return 0 ;
 }
