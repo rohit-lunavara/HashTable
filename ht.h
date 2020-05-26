@@ -11,7 +11,6 @@
 
 // DEBUG
 #include <iostream>
-
 namespace rll {
     template <typename T>
     concept Hashable = requires(T a) {
