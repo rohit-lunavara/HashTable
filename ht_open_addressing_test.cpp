@@ -3,27 +3,32 @@
 #include <iostream>
 #include <iomanip>
 #include <cassert>
+#include <vector>
 
 int main () {
-    rll::ht_open_addressing<int, std::string> ht_int_str { 5, rll::ProbeType::Linear } ;
+    std::vector<rll::ht_open_addressing<int, std::string>> vec_ht_int_str 
+    {
+        { 5, rll::ProbeType::Linear },
+        { 5, rll::ProbeType::Quadratic },
+        { 5, rll::ProbeType::DoubleHash }
+    } ;
+
     std::cout << std::boolalpha ;
-    assert(ht_int_str.ins(-5, "Hello") == true) ;
-    assert(ht_int_str.ins(-1, "Hello") == true) ;
-    assert(ht_int_str.ins(-4, "Hello") == true) ;
-    assert(ht_int_str.ins(-2, "Hello") == true) ;
-    assert(ht_int_str.ins(-3, "Hello") == true) ;
-    assert(ht_int_str.ins(0, "Hello") == false) ;
+    for (auto& ht_int_str : vec_ht_int_str) {
+        assert(ht_int_str.ins(-5, "Hello") == true) ;
+        assert(ht_int_str.ins(-1, "Hi") == true) ;
+        assert(ht_int_str.ins(-4, "Hello") == true) ;
+        assert(ht_int_str.ins(-2, "Hi") == true) ;
+        assert(ht_int_str.ins(-3, "Hello") == true) ;
+        assert(ht_int_str.ins(0, "Hello") == false) ;
 
-    assert(ht_int_str.srch(-5) == "Hello") ;
-    assert(ht_int_str.srch(-4) == "Hello") ;
-    assert(ht_int_str.srch(-3) == "Hello") ;
-    assert(ht_int_str.srch(-2) == "Hello") ;
-    assert(ht_int_str.srch(-1) == "Hello") ;
-    // assert(ht_int_str.srch(0) == "Hello") ;
-
-    // ht_int_str.del(2) ;
-    // ht_int_str.del(-10) ;
-    // assert(ht_int_str.srch(-10) == "Hello") ;
+        assert(ht_int_str.srch(-5) == "Hello") ;
+        assert(ht_int_str.srch(-4) == "Hello") ;
+        assert(ht_int_str.srch(-3) == "Hello") ;
+        assert(ht_int_str.srch(-2) == "Hi") ;
+        assert(ht_int_str.srch(-1) == "Hi") ;
+        // assert(ht_int_str.srch(0) == "Hello") ;
+    }
 
     return 0 ;
 }

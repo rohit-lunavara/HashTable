@@ -156,9 +156,13 @@ namespace rll {
 
     enum class ProbeType {
         Linear,
-        Quadratic
+        Quadratic,
+        DoubleHash
     } ;
 
+    // TODO : Make Probe more maintainable by 
+    // 1. Adding Visitor design pattern, or,
+    // 2. Abstract template class inheritance hierarchy (Probe<K> <- LinearProbe<K>)
     template <Hashable K>
     class Probe {
         private :
@@ -175,6 +179,9 @@ namespace rll {
                 else if (pr_t == ProbeType::Quadratic) {
                     return q_hash(k, i, ht_size) ;
                 }
+                else if (pr_t == ProbeType::DoubleHash) {
+                    return d_hash(k, i, ht_size) ;
+                }
                 else {
                     throw InvalidProbeException() ;
                 }
@@ -187,6 +194,10 @@ namespace rll {
 
             std::size_t q_hash (const K& k, const std::size_t& i, const std::size_t& ht_size) {
                 return ( std::hash<K>{}(k) + i * q_c_1 + i * i * q_c_2 ) % ht_size ;
+            }
+
+            std::size_t d_hash (const K& k, const std::size_t& i, const std::size_t& ht_size) {
+                return ( std::hash<K>{}(k) + i * std::hash<K>{}(k) ) % ht_size ;
             }
     } ;
 
@@ -212,7 +223,6 @@ namespace rll {
                 do  {
                     j = pr.hash(k, i, ht.size()) ;
                     if (!ht.at(j)) {
-                        // std::cout << "J : " << j << "\n" ;
                         ht.at(j) = Node<K, V> { k, v } ;
                         ++curr_size ;
                         return true ;
